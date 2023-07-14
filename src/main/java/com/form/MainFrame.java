@@ -1,12 +1,8 @@
 package com.form;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -20,6 +16,16 @@ public class MainFrame extends JFrame {
         toolBar = new ToolBar();
 
         textPanel = new TextPanel();
+
+        toolBar.setStringListener(new StringListener() {
+
+            @Override
+            public void textEmitted(String text) {
+                textPanel.appendText(text);
+
+            }
+
+        });
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(textPanel, BorderLayout.CENTER);
