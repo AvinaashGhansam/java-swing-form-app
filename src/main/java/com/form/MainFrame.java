@@ -10,7 +10,6 @@ public class MainFrame extends JFrame {
     private FormsPanel formsPanel;
 
     public MainFrame() {
-        // TODO: Lesson 13
         super("Hello World");
         // Setting a border layout and add components to it.
         this.setLayout(new BorderLayout());
@@ -27,14 +26,15 @@ public class MainFrame extends JFrame {
 
             }
 
-        });
+        }); // TODO: Lesson 15
 
         formsPanel.setFormListener(new FormListener() {
             public void formEventOcurred(FormEvent e) {
                 String name = e.getName();
                 String occupation = e.getOccupation();
+                int ageCategory = e.getAgeCategory();
 
-                textPanel.appendText(name + " " + occupation + "\n");
+                textPanel.appendText(name + ": " + occupation + ": " + ageCategory + "\n");
 
             }
         });

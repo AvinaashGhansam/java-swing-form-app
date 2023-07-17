@@ -8,8 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -21,6 +23,7 @@ public class FormsPanel extends JPanel {
     private JTextField occupationField;
     private JButton okBtn;
     private FormListener formListener;
+    private JList<AgeCategory> ageList;
 
     public FormsPanel() {
         // Using the layout manager to determine the size
@@ -32,16 +35,29 @@ public class FormsPanel extends JPanel {
         occupationLabel = new JLabel("Occupation: ");
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
+        ageList = new JList<>();
+
+        DefaultListModel<AgeCategory> ageModel = new DefaultListModel<>();
+        ageModel.addElement(new AgeCategory(0, "Under 18"));
+        ageModel.addElement(new AgeCategory(1, "18 to 65"));
+        ageModel.addElement(new AgeCategory(2, "65 or Over"));
+        ageList.setModel(ageModel);
+        ageList.setSelectedIndex(0); // set a default selection
+
+        // make ageList prettier
+        ageList.setPreferredSize(new Dimension(95, 66));
+        ageList.setBorder(BorderFactory.createEtchedBorder());
 
         okBtn = new JButton("OK");
         okBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
                 String name = nameField.getText();
                 String occupation = occupationField.getText();
+                AgeCategory ageCategory = ageList.getSelectedValue();
+                System.out.println(ageCategory);
 
-                FormEvent ev = new FormEvent(this, name, occupation);
+                FormEvent ev = new FormEvent(this, name, occupation, ageCategory.getId());
 
                 if (formListener != null) {
                     formListener.formEventOcurred(ev);
@@ -99,9 +115,19 @@ public class FormsPanel extends JPanel {
 
         /////// Third Row //////////
         gc.weightx = 1;
-        gc.weighty = 1;
+        gc.weighty = 0.2;
 
         gc.gridy = 2;
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.insets = new Insets(0, 0, 0, 0);
+        this.add(ageList, gc);
+
+        /////// Fourth Row //////////
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridy = 3;
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         gc.insets = new Insets(0, 0, 0, 0);
@@ -121,6 +147,39 @@ public class FormsPanel extends JPanel {
      */
     public void setFormListener(FormListener formListener) {
         this.formListener = formListener;
+    }
+
+}
+
+class AgeCategory {
+    private String text;
+    private int id;
+
+    public AgeCategory(int id, String text) {
+        this.text = text;
+        this.id = id;
+
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 
 }

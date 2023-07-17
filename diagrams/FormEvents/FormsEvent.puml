@@ -1,0 +1,33 @@
+@startuml
+
+class FormPanel {
+    #formListener: FormListener
+    #setFormListener(FormListener formListener): void
+}
+
+interface FormListener {
+    + formEventOcurred(FormEvent e): void
+}
+
+class EventListener {
+
+}
+
+class FormEvent {
+    #name: String
+    #occupation: String
+    +setName(String): void
+    +getOccupation(): String
+
+}
+
+class EventObject {
+
+}
+
+class MainFrame {
+
+}
+
+FormEvent --|> EventObject
+FormListener --> FormPanel
