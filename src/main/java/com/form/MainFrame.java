@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
 
             }
 
-        }); // TODO: Lesson 15
+        }); 
 
         formsPanel.setFormListener(new FormListener() {
             public void formEventOcurred(FormEvent e) {

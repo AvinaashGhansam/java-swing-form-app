@@ -8,8 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,6 +27,7 @@ public class FormsPanel extends JPanel {
     private JButton okBtn;
     private FormListener formListener;
     private JList<AgeCategory> ageList;
+    private JComboBox<String> empComboBox;
 
     public FormsPanel() {
         // Using the layout manager to determine the size
@@ -36,6 +40,7 @@ public class FormsPanel extends JPanel {
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
         ageList = new JList<>();
+        empComboBox = new JComboBox<>();
 
         DefaultListModel<AgeCategory> ageModel = new DefaultListModel<>();
         ageModel.addElement(new AgeCategory(0, "Under 18"));
@@ -47,6 +52,13 @@ public class FormsPanel extends JPanel {
         // make ageList prettier
         ageList.setPreferredSize(new Dimension(95, 66));
         ageList.setBorder(BorderFactory.createEtchedBorder());
+
+        // Setting up combo box
+        DefaultComboBoxModel<String> empModel = new DefaultComboBoxModel<>();
+        empModel.addElement("Employed");
+        empModel.addElement("Self-Employed");
+        empModel.addElement("Unemployed");
+        empComboBox.setModel(empModel);
 
         okBtn = new JButton("OK");
         okBtn.addActionListener(new ActionListener() {
@@ -71,67 +83,10 @@ public class FormsPanel extends JPanel {
         Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 
-        // Set the layout manager
-        this.setLayout(new GridBagLayout());
+        layoutComponents();
 
-        GridBagConstraints gc = new GridBagConstraints();
-
-        // x --> left to right
-        // y --> top to bottom
-        /////// First Row //////////
-        gc.weightx = 1;
-        gc.weighty = 0.1;
-
-        gc.gridx = 0;
-        gc.gridy = 0;
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_END; // side of the cell that the control sticks to
-        gc.insets = new Insets(0, 0, 0, 5); // this will be used to put some ident on the label
-
-        this.add(namLabel, gc); // if this is the only component then it will be center relative to panel
-
-        gc.gridx = 1;
-        gc.gridy = 0;
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        this.add(nameField, gc);
-
-        /////// Second Row //////////
-        gc.weightx = 1;
-        gc.weighty = 0.1;
-
-        gc.gridy = 1;
-        gc.gridx = 0;
-        gc.insets = new Insets(0, 0, 0, 5); // this will be used to put some ident on the label
-        gc.anchor = GridBagConstraints.LINE_END;
-
-        this.add(occupationLabel, gc);
-
-        gc.gridy = 1;
-        gc.gridx = 1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 0);
-        this.add(occupationField, gc);
-
-        /////// Third Row //////////
-        gc.weightx = 1;
-        gc.weighty = 0.2;
-
-        gc.gridy = 2;
-        gc.gridx = 1;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets(0, 0, 0, 0);
-        this.add(ageList, gc);
-
-        /////// Fourth Row //////////
-        gc.weightx = 1;
-        gc.weighty = 1;
-
-        gc.gridy = 3;
-        gc.gridx = 1;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets(0, 0, 0, 0);
-        this.add(okBtn, gc);
+        // TODO: add employment category to ok btn listenser and passed to main frame
+        // time 7:34 lesson 16
 
     }
 
@@ -147,6 +102,94 @@ public class FormsPanel extends JPanel {
      */
     public void setFormListener(FormListener formListener) {
         this.formListener = formListener;
+    }
+
+    public void layoutComponents() {
+        // Set the layout manager
+        this.setLayout(new GridBagLayout());
+
+        GridBagConstraints gc = new GridBagConstraints();
+
+        // x --> left to right
+        // y --> top to bottom
+        /////// First Row //////////
+        gc.gridy = 0;
+
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        gc.gridx = 0;
+        gc.fill = GridBagConstraints.NONE;
+        gc.anchor = GridBagConstraints.LINE_END; // side of the cell that the control sticks to
+        gc.insets = new Insets(0, 0, 0, 5); // this will be used to put some ident on the label
+
+        this.add(namLabel, gc); // if this is the only component then it will be center relative to panel
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        this.add(nameField, gc);
+
+        /////// Next Row //////////
+        gc.gridy++;
+
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0, 0, 0, 5); // this will be used to put some ident on the label
+        gc.anchor = GridBagConstraints.LINE_END;
+
+        this.add(occupationLabel, gc);
+
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 0);
+        this.add(occupationField, gc);
+
+        /////// Next Row //////////
+        gc.gridy++;
+
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0, 0, 0, 5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        this.add(new JLabel("Age: "), gc);
+
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.insets = new Insets(0, 0, 0, 0);
+        this.add(ageList, gc);
+
+        /////// Next Row //////////
+        gc.gridy++;
+
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0, 0, 0, 5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        this.add(new JLabel("Employment: "), gc);
+
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.insets = new Insets(0, 0, 0, 0);
+        this.add(empComboBox, gc);
+
+        /////// Next Row //////////
+        gc.gridy++;
+
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.insets = new Insets(0, 0, 0, 0);
+        this.add(okBtn, gc);
+
     }
 
 }
