@@ -10,16 +10,25 @@ public class FormEvent extends EventObject {
     private String name;
     private String occupation;
     private int ageCategory;
+    private String employmentCat;
+    private boolean usCiziten;
+    private String taxId;
+    private String genderCommand;
 
     public FormEvent(Object source) {
         super(source);
     }
 
-    public FormEvent(Object source, String name, String occupation, int ageCategory) {
+    public FormEvent(Object source, String name, String occupation, int ageCategory, String employmentCat,
+            boolean usCitizen, String taxId, String genderCommand) {
         super(source);
         this.name = name;
         this.occupation = occupation;
         this.ageCategory = ageCategory;
+        this.employmentCat = employmentCat;
+        this.usCiziten = usCitizen;
+        this.taxId = taxId;
+        this.genderCommand = genderCommand;
     }
 
     /**
@@ -62,6 +71,62 @@ public class FormEvent extends EventObject {
      */
     public void setAgeCategory(int ageCategory) {
         this.ageCategory = ageCategory;
+    }
+
+    /**
+     * @return the employmentCat
+     */
+    public String getEmploymentCat() {
+        return employmentCat;
+    }
+
+    /**
+     * @param employmentCat the employmentCat to set
+     */
+    public void setEmploymentCat(String employmentCat) {
+        this.employmentCat = employmentCat;
+    }
+
+    /**
+     * @return the usCiziten
+     */
+    public boolean isUsCiziten() {
+        return usCiziten;
+    }
+
+    /**
+     * @param usCiziten the usCiziten to set
+     */
+    public void setUsCiziten(boolean usCiziten) {
+        this.usCiziten = usCiziten;
+    }
+
+    /**
+     * @return the taxId
+     */
+    public String getTaxId() {
+        return taxId;
+    }
+
+    /**
+     * @param taxId the taxId to set
+     */
+    public void setTaxId(String taxId) {
+        this.taxId = taxId;
+    }
+
+    /**
+     * @return the genderCommand
+     */
+    public String getGenderCommand() {
+        return genderCommand;
+    }
+
+    /**
+     * @param genderCommand the genderCommand to set
+     */
+    public void setGenderCommand(String genderCommand) {
+        this.genderCommand = genderCommand;
     }
 
 }

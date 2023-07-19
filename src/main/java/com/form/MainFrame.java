@@ -3,6 +3,9 @@ package com.form;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -18,6 +21,8 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         formsPanel = new FormsPanel();
 
+        this.setJMenuBar(createMenuBar());
+
         toolBar.setStringListener(new StringListener() {
 
             @Override
@@ -26,15 +31,21 @@ public class MainFrame extends JFrame {
 
             }
 
-        }); 
+        });
 
         formsPanel.setFormListener(new FormListener() {
             public void formEventOcurred(FormEvent e) {
                 String name = e.getName();
                 String occupation = e.getOccupation();
                 int ageCategory = e.getAgeCategory();
+                String employmentCat = e.getEmploymentCat();
+                boolean usCitizen = e.isUsCiziten();
+                String taxId = e.getTaxId();
+                String gender = e.getGenderCommand();
 
-                textPanel.appendText(name + ": " + occupation + ": " + ageCategory + "\n");
+                textPanel
+                        .appendText(name + ": " + occupation + ": " + ageCategory + ": " + employmentCat
+                                + ": " + usCitizen + ": " + taxId + ": " + gender + "\n");
 
             }
         });
@@ -45,6 +56,32 @@ public class MainFrame extends JFrame {
         this.setSize(600, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem exportDataItem = new JMenuItem("Export Data...");
+        JMenuItem importDataItem = new JMenuItem("Import Data...");
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        fileMenu.add(exportDataItem);
+        fileMenu.add(importDataItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
+
+        JMenu windowMenu = new JMenu("Window");
+        JMenu showMenu = new JMenu("Show");
+        JMenuItem showFormItem = new JMenuItem("Person Form");
+        showMenu.add(showFormItem);
+        windowMenu.add(showMenu);
+
+        menuBar.add(fileMenu);
+        menuBar.add(windowMenu);
+        return menuBar;
+        // TODO: Lesson 20
+
     }
 
 }
