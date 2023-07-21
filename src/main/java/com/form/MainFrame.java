@@ -1,11 +1,12 @@
 package com.form;
 
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -53,6 +54,7 @@ public class MainFrame extends JFrame {
         this.add(toolBar, BorderLayout.NORTH);
         this.add(textPanel, BorderLayout.CENTER);
 
+        this.setMinimumSize(new Dimension(500, 400));
         this.setSize(600, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -73,14 +75,48 @@ public class MainFrame extends JFrame {
 
         JMenu windowMenu = new JMenu("Window");
         JMenu showMenu = new JMenu("Show");
-        JMenuItem showFormItem = new JMenuItem("Person Form");
+
+        JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
+        showFormItem.setSelected(true);
+
         showMenu.add(showFormItem);
         windowMenu.add(showMenu);
 
         menuBar.add(fileMenu);
         menuBar.add(windowMenu);
+
+        showFormItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();
+                // show / hide the person form
+                formsPanel.setVisible(menuItem.isSelected());
+
+            }
+
+        });
+
+        // Setting mnemonic
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        exitItem.setMnemonic(KeyEvent.VK_X);
+        exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                /*String text = JOptionPane.showInputDialog(MainFrame.this,
+                        "Enter Your Username",
+                        "Username", JOptionPane.INFORMATION_MESSAGE);*/
+
+                int action = JOptionPane.showConfirmDialog(MainFrame.this,
+                        "Do You Really Want To Exit?",
+                        "Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
+
+                if (action == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
         return menuBar;
-        // TODO: Lesson 20
 
     }
 
