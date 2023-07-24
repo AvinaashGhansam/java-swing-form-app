@@ -1,2 +1,6 @@
-package com.form.model;public enum Gender {
+package com.form.model;
+
+public enum Gender {
+    male,
+    female
 }

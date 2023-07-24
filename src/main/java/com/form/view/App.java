@@ -1,4 +1,6 @@
-package com.form;
+package com.form.view;
+
+import com.form.view.MainFrame;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

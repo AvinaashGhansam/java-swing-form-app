@@ -1,4 +1,4 @@
-package com.form;
+package com.form.view;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
