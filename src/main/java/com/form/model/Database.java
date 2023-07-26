@@ -1,16 +1,23 @@
 package com.form.model;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Database {
     private static final Database database = new Database();
-    private ArrayList<Person> people;
+    private List<Person> people;
 
     private Database() {
-        people = new ArrayList<>();
+        people = new LinkedList<>();
 
     }
 
@@ -23,7 +30,7 @@ public class Database {
     }
 
     public List<Person> getPerson() {
-        return this.people;
+        return Collections.unmodifiableList((this.people));
     }
 
     public void saveToFile(File file) throws IOException {
@@ -36,7 +43,6 @@ public class Database {
         oos.writeObject(persons);
 
         fos.close();
-
 
     }
 
@@ -55,5 +61,9 @@ public class Database {
 
         ois.close();
 
+    }
+
+    public void removePerson(int row) {
+        people.remove(row);
     }
 }

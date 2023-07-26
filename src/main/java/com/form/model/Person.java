@@ -3,7 +3,7 @@ package com.form.model;
 import java.io.Serializable;
 
 public class Person implements Serializable {
-
+    // TODO: Implement a serizable id?
     private static int count = 0;
     private int id;
     private String name;
@@ -14,7 +14,8 @@ public class Person implements Serializable {
     private boolean usCitizen;
     private Gender gender;
 
-    public Person(String name, String occupation, AgeCategory ageCategory, EmploymentCategory empCat, String taxId, boolean usCitizen, Gender gender) {
+    public Person(String name, String occupation, AgeCategory ageCategory, EmploymentCategory empCat, String taxId,
+            boolean usCitizen, Gender gender) {
         this.name = name;
         this.occupation = occupation;
         this.ageCategory = ageCategory;

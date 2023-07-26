@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+// TODO: Lesson 29
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private ToolBar toolBar;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser;
     private TablePanel tablePanel;
     Controller controller;
+
     public MainFrame() {
         super("Hello World");
         // Setting a border layout and add components to it.
@@ -30,6 +32,11 @@ public class MainFrame extends JFrame {
         controller = new Controller();
 
         tablePanel.setData(controller.getPeople());
+        tablePanel.setPersonTableListener(new PersonTableListener() {
+            public void rowDeleted(int row) {
+                controller.removePerson(row);
+            }
+        });
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -68,7 +75,7 @@ public class MainFrame extends JFrame {
         });
         this.add(formsPanel, BorderLayout.WEST);
         this.add(toolBar, BorderLayout.NORTH);
-//        this.add(textPanel, BorderLayout.CENTER);
+        // this.add(textPanel, BorderLayout.CENTER);
         this.add(tablePanel, BorderLayout.CENTER);
 
         this.setMinimumSize(new Dimension(500, 400));
@@ -118,23 +125,25 @@ public class MainFrame extends JFrame {
         exitItem.setMnemonic(KeyEvent.VK_X);
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
 
+        importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+
         importDataItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Pass the parent window in
-               if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                   // open the file
-                   try {
-                       controller.loadFromFile(fileChooser.getSelectedFile());
-                       tablePanel.refresh();
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    // open the file
+                    try {
+                        controller.loadFromFile(fileChooser.getSelectedFile());
+                        tablePanel.refresh();
 
-                   } catch (Exception ex) {
-                       JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file",
-                               "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file",
+                                "Error", JOptionPane.ERROR_MESSAGE);
 
-                   }
+                    }
 
-               }
+                }
 
             }
         });
@@ -160,9 +169,11 @@ public class MainFrame extends JFrame {
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*String text = JOptionPane.showInputDialog(MainFrame.this,
-                        "Enter Your Username",
-                        "Username", JOptionPane.INFORMATION_MESSAGE);*/
+                /*
+                 * String text = JOptionPane.showInputDialog(MainFrame.this,
+                 * "Enter Your Username",
+                 * "Username", JOptionPane.INFORMATION_MESSAGE);
+                 */
 
                 int action = JOptionPane.showConfirmDialog(MainFrame.this,
                         "Do You Really Want To Exit?",

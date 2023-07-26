@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.util.List;
 
 public class Controller {
-    public List<Person>getPeople() {
+    public List<Person> getPeople() {
         return Database.getDatabase().getPerson();
     }
+
     /**
      * See the formPanel event listener
      * reference {@link com.form.view.MainFrame}
+     * 
      * @param e
      */
     public void addPerson(FormEvent e) {
@@ -48,15 +50,20 @@ public class Controller {
         }
 
         Database.getDatabase().addPerson(new Person(name, occupation, category,
-                employmentCategory, taxId, usCitizen, genderCategory ));
+                employmentCategory, taxId, usCitizen, genderCategory));
 
     }
+
     public void saveToFile(File file) throws Exception {
         Database.getDatabase().saveToFile(file);
     }
 
     public void loadFromFile(File file) throws Exception {
         Database.getDatabase().loadFromFile(file);
+    }
+
+    public void removePerson(int row) {
+        Database.getDatabase().removePerson(row);
     }
 
 }
