@@ -1,14 +1,22 @@
 package com.form.view;
 
-import com.form.controller.Controller;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
+import com.form.controller.Controller;
 
 // TODO: Lesson 29
 public class MainFrame extends JFrame {
@@ -17,6 +25,7 @@ public class MainFrame extends JFrame {
     private FormsPanel formsPanel;
     private JFileChooser fileChooser;
     private TablePanel tablePanel;
+    private PrefsDialog prefsDialog;
     Controller controller;
 
     public MainFrame() {
@@ -28,6 +37,7 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         formsPanel = new FormsPanel();
         tablePanel = new TablePanel();
+        prefsDialog = new PrefsDialog(this);
 
         controller = new Controller();
 
@@ -99,15 +109,24 @@ public class MainFrame extends JFrame {
 
         JMenu windowMenu = new JMenu("Window");
         JMenu showMenu = new JMenu("Show");
+        JMenuItem prefsItem = new JMenuItem("Preferences...");
 
         JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
         showFormItem.setSelected(true);
 
         showMenu.add(showFormItem);
         windowMenu.add(showMenu);
+        windowMenu.add(prefsItem);
 
         menuBar.add(fileMenu);
         menuBar.add(windowMenu);
+
+        prefsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prefsDialog.setVisible(true);
+            }
+        });
 
         showFormItem.addActionListener(new ActionListener() {
             @Override
