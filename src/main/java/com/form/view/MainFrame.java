@@ -18,7 +18,6 @@ import javax.swing.KeyStroke;
 
 import com.form.controller.Controller;
 
-// TODO: Lesson 29
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private ToolBar toolBar;
