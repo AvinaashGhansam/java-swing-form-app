@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser;
     private TablePanel tablePanel;
     private PrefsDialog prefsDialog;
+    private Preferences prefs;
     Controller controller;
 
     public MainFrame() {
@@ -38,6 +40,8 @@ public class MainFrame extends JFrame {
         tablePanel = new TablePanel();
         prefsDialog = new PrefsDialog(this);
 
+        prefs = Preferences.userRoot().node("db");
+
         controller = new Controller();
 
         tablePanel.setData(controller.getPeople());
@@ -46,6 +50,23 @@ public class MainFrame extends JFrame {
                 controller.removePerson(row);
             }
         });
+
+        prefsDialog.setPrefListener(new PrefListener() {
+            public void preferenceSet(String user, String password, int portNumber) {
+                prefs.put("user", user);
+                prefs.put("password", password);
+                prefs.put("port", String.valueOf(portNumber));
+               controller.getAuthentication(user, password, portNumber);
+
+            }
+
+        });
+
+        // Set Default value
+        String user = prefs.get("user", "");
+        String password = prefs.get("password", "");
+        int port = Integer.parseInt(prefs.get("port", "3306"));
+        prefsDialog.setDefault(user, password, port);
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -142,6 +163,8 @@ public class MainFrame extends JFrame {
         fileMenu.setMnemonic(KeyEvent.VK_F);
         exitItem.setMnemonic(KeyEvent.VK_X);
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
+
+        prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
 
         importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
 

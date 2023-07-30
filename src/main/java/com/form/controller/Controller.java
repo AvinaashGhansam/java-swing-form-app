@@ -4,7 +4,6 @@ import com.form.model.*;
 import com.form.view.FormEvent;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class Controller {
@@ -64,6 +63,11 @@ public class Controller {
 
     public void removePerson(int row) {
         Database.getDatabase().removePerson(row);
+    }
+
+    public void getAuthentication(String user, String password, int port) {
+        System.out.println("user[controller] " + user + " password " + password + " port " + port);
+
     }
 
 }
