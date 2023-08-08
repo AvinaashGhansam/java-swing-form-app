@@ -6,11 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -87,6 +83,7 @@ public class Database {
         String url = "jdbc:mysql://localhost:3306/swingtest";
 
         con = DriverManager.getConnection(url, "root", "4SU78S");
+
     }
 
     public void disconnect() {
@@ -95,26 +92,84 @@ public class Database {
                 con.close();
             }
         } catch (SQLException se) {
-            System.out.println(se.getStackTrace());
+            System.out.println(Arrays.toString(se.getStackTrace()));
 
         }
 
     }
 
     public void save() throws SQLException {
+        System.out.println("saving...");
         // SQL Statement
         String checkSql = "SELECT COUNT(*) as count FROM people WHERE id=?";
         PreparedStatement checkStmt = con.prepareStatement(checkSql);
+
+        String insertSql = "INSERT INTO people (id, name, age, employment_status, tax_id, us_citizen, gender, occupation)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStatement = con.prepareStatement(insertSql);
+
+        String updateSql = "UPDATE people SET name=?, age=?, employment_status=?, tax_id=?, us_citizen=?, gender=?, occupation=?" +
+                " WHERE id=?";
+
+        PreparedStatement updateStatement = con.prepareStatement(updateSql);
+
         for (Person person : people) {
+            System.out.println("in loop");
             int id = person.getId();
+            String name = person.getName();
+            String occupation = person.getOccupation();
+            AgeCategory ageCategory = person.getAgeCategory();
+            EmploymentCategory employmentCategory = person.getEmpCat();
+            String taxId = person.getTaxId();
+            boolean isCitizen = person.getUsCitizen();
+            Gender gender = person.getGender();
+
             // Look for the first wildcard and replace it with the id
             checkStmt.setInt(1, id);
             ResultSet checkResult = checkStmt.executeQuery();
+            checkResult.next();
 
             // move to next row
             int count = checkResult.getInt(1);
-            System.out.println("Count for person with ID " + id + " is " + count);
+            System.out.println("count: " + count);
+
+            if (count == 0) {
+                System.out.println("adding column...");
+                System.out.println("Inserting person with ID " + id);
+
+                int col = 1;
+                insertStatement.setInt(col++, id);
+                insertStatement.setString(col++, name);
+                insertStatement.setString(col++, ageCategory.name());
+                insertStatement.setString(col++, employmentCategory.name());
+                insertStatement.setString(col++, taxId);
+                insertStatement.setBoolean(col++, isCitizen);
+                insertStatement.setString(col++, gender.name());
+                insertStatement.setString(col++, occupation);
+
+                insertStatement.executeUpdate();
+
+
+            } else {
+                System.out.println("Updating person with ID " + id);
+                int col = 1;
+
+                updateStatement.setString(col++, name);
+                updateStatement.setString(col++, ageCategory.name());
+                updateStatement.setString(col++, employmentCategory.name());
+                updateStatement.setString(col++, taxId);
+                updateStatement.setBoolean(col++, isCitizen);
+                updateStatement.setString(col++, gender.name());
+                updateStatement.setString(col++, occupation);
+                updateStatement.setInt(col++, id);
+
+                updateStatement.executeUpdate();
+
+            }
         }
+
         checkStmt.close();
+        updateStatement.close();
+        insertStatement.close();
     }
 }
