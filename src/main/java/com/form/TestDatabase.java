@@ -18,7 +18,7 @@ public class TestDatabase {
 
         }
         Database.getDatabase().addPerson(new Person("Ghansam", "Engr", AgeCategory.adult,
-                EmploymentCategory.employed, "1234", true, Gender.male ));
+                EmploymentCategory.employed, "1234", true, Gender.male));
         try {
             System.out.println("saving db");
             Database.getDatabase().save();
@@ -26,8 +26,13 @@ public class TestDatabase {
         } catch (SQLException se) {
 
         }
+        try {
+            Database.getDatabase().load();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Database.getDatabase().disconnect();
     }
-    // TODO: Lesson 41 Loading Data from db
 
 }

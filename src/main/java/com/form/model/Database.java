@@ -27,6 +27,38 @@ public class Database {
         return database;
     }
 
+    public void load() throws SQLException {
+        people.clear();
+        String sql = "SELECT id, name, age, employment_status, tax_id, us_citizen, gender, occupation FROM people ORDER BY name";
+        Statement selectStatement = con.createStatement();
+        ResultSet resultSet = selectStatement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String age = resultSet.getString("age");
+            String employmentStatus = resultSet.getString("employment_status");
+            String tax_id = resultSet.getString("tax_id");
+            boolean usCitizen = resultSet.getBoolean("us_citizen");
+            String gender = resultSet.getString("gender");
+            String occupation = resultSet.getString("occupation");
+
+            Person person = new Person(id,
+                    name,
+                    occupation,
+                    AgeCategory.valueOf(age),
+                    EmploymentCategory.valueOf(employmentStatus),
+                    tax_id,
+                    usCitizen,
+                    Gender.valueOf(gender));
+            people.add(person);
+            System.out.println(person);
+        }
+        resultSet.close();
+        selectStatement.close();
+
+    }
+
     public void addPerson(Person person) {
         people.add(person);
     }
@@ -104,11 +136,13 @@ public class Database {
         String checkSql = "SELECT COUNT(*) as count FROM people WHERE id=?";
         PreparedStatement checkStmt = con.prepareStatement(checkSql);
 
-        String insertSql = "INSERT INTO people (id, name, age, employment_status, tax_id, us_citizen, gender, occupation)" +
+        String insertSql = "INSERT INTO people (id, name, age, employment_status, tax_id, us_citizen, gender, occupation)"
+                +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement insertStatement = con.prepareStatement(insertSql);
 
-        String updateSql = "UPDATE people SET name=?, age=?, employment_status=?, tax_id=?, us_citizen=?, gender=?, occupation=?" +
+        String updateSql = "UPDATE people SET name=?, age=?, employment_status=?, tax_id=?, us_citizen=?, gender=?, occupation=?"
+                +
                 " WHERE id=?";
 
         PreparedStatement updateStatement = con.prepareStatement(updateSql);
@@ -148,7 +182,6 @@ public class Database {
                 insertStatement.setString(col++, occupation);
 
                 insertStatement.executeUpdate();
-
 
             } else {
                 System.out.println("Updating person with ID " + id);
